@@ -4,6 +4,7 @@ import com.example.springrestapi.interestpoints.model.Place;
 import com.example.springrestapi.interestpoints.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,15 @@ public class PlaceController {
     @Autowired
     private PlaceRepository placeRepository;
 
-    @GetMapping
-    public List<Place> getAllPlaces() {
+    @GetMapping("/public")
+    public List<Place> getPublicPlaces() {
         return placeRepository.findByIsPublicTrueAndIsDeletedFalse();
+    }
+
+    @GetMapping
+    public List<Place> getUserPlaces(@AuthenticationPrincipal Jwt jwt) {
+        Long userId = Long.valueOf(jwt.getSubject());
+        return placeRepository.findByUserIdAndIsDeletedFalse(userId);
     }
 
     @GetMapping("/{id}")
@@ -34,18 +41,12 @@ public class PlaceController {
         return placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId);
     }
 
-    @GetMapping("/user")
-    public List<Place> getUserPlaces(@AuthenticationPrincipal Jwt jwt) {
-        Long userId = Long.valueOf(jwt.getSubject());
-        return placeRepository.findByUserIdAndIsDeletedFalse(userId);
-    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Place> createPlace(@RequestBody Place place, @AuthenticationPrincipal Jwt jwt) {
         place.setUserId(Long.valueOf(jwt.getSubject()));
         return ResponseEntity.ok(placeRepository.save(place));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails, @AuthenticationPrincipal Jwt jwt) {

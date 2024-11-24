@@ -1,4 +1,5 @@
 package com.example.springrestapi.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/categories/**").hasRole("ADMIN")
+                                .requestMatchers("/api/places/public/**").permitAll()
                                 .requestMatchers("/api/places/**").authenticated()
                                 .anyRequest().permitAll()
                 )
