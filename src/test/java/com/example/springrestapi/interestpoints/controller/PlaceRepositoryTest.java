@@ -28,13 +28,13 @@ public class PlaceRepositoryTest {
     @Test
     public void testFindByIsPublicTrue() {
         Place place1 = new Place();
-        place1.setIsPublic(true);
+        place1.setPublic(true);
         Place place2 = new Place();
-        place2.setIsPublic(true);
+        place2.setPublic(true);
 
-        when(placeRepository.findByIsPublicTrue()).thenReturn(Arrays.asList(place1, place2));
+        when(placeRepository.findByIsPublicTrueAndIsDeletedFalse()).thenReturn(Arrays.asList(place1, place2));
 
-        List<Place> publicPlaces = placeRepository.findByIsPublicTrue();
+        List<Place> publicPlaces = placeRepository.findByIsPublicTrueAndIsDeletedFalse();
         assertThat(publicPlaces).isNotEmpty();
     }
 
@@ -45,11 +45,11 @@ public class PlaceRepositoryTest {
         Category category = new Category();
         category.setId(categoryId);
         place.setCategory(category);
-        place.setIsPublic(true);
+        place.setPublic(true);
 
-        when(placeRepository.findByCategoryIdAndIsPublicTrue(categoryId)).thenReturn(Arrays.asList(place));
+        when(placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId)).thenReturn(Arrays.asList(place));
 
-        List<Place> places = placeRepository.findByCategoryIdAndIsPublicTrue(categoryId);
+        List<Place> places = placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId);
         assertThat(places).isNotEmpty();
     }
 
@@ -59,9 +59,9 @@ public class PlaceRepositoryTest {
         Place place = new Place();
         place.setUserId(userId);
 
-        when(placeRepository.findByUserId(userId)).thenReturn(Arrays.asList(place));
+        when(placeRepository.findByUserIdAndIsDeletedFalse(userId)).thenReturn(Arrays.asList(place));
 
-        List<Place> places = placeRepository.findByUserId(userId);
+        List<Place> places = placeRepository.findByUserIdAndIsDeletedFalse(userId);
         assertThat(places).isNotEmpty();
     }
 
@@ -83,11 +83,11 @@ public class PlaceRepositoryTest {
         Long placeId = 4L;
         Place place = new Place();
         place.setId(placeId);
-        place.setIsPublic(true);
+        place.setPublic(true);
 
-        when(placeRepository.findByIdAndIsPublicTrue(placeId)).thenReturn(Optional.of(place));
+        when(placeRepository.findByIdAndIsPublicTrueAndIsDeletedFalse(placeId)).thenReturn(Optional.of(place));
 
-        Optional<Place> foundPlace = placeRepository.findByIdAndIsPublicTrue(placeId);
+        Optional<Place> foundPlace = placeRepository.findByIdAndIsPublicTrueAndIsDeletedFalse(placeId);
         assertThat(foundPlace).isPresent();
     }
 }

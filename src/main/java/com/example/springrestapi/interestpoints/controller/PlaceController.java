@@ -19,7 +19,7 @@ public class PlaceController {
 
     @GetMapping
     public List<Place> getAllPlaces() {
-        return placeRepository.findByIsPublicTrue();
+        return placeRepository.findByIsPublicTrueAndIsDeletedFalse();
     }
 
     @GetMapping("/{id}")
@@ -31,13 +31,13 @@ public class PlaceController {
 
     @GetMapping("/category/{categoryId}")
     public List<Place> getPlacesByCategory(@PathVariable Long categoryId) {
-        return placeRepository.findByCategoryIdAndIsPublicTrue(categoryId);
+        return placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId);
     }
 
     @GetMapping("/user")
     public List<Place> getUserPlaces(@AuthenticationPrincipal Jwt jwt) {
         Long userId = Long.valueOf(jwt.getSubject());
-        return placeRepository.findByUserId(userId);
+        return placeRepository.findByUserIdAndIsDeletedFalse(userId);
     }
 
     @PostMapping
@@ -71,7 +71,8 @@ public class PlaceController {
                     if (!place.getUserId().equals(Long.valueOf(jwt.getSubject()))) {
                         return ResponseEntity.status(403).build();
                     }
-                    placeRepository.delete(place);
+                    place.setDeleted(true);
+                    placeRepository.save(place);
                     return ResponseEntity.ok().build();
                 })
                 .orElse(ResponseEntity.notFound().build());

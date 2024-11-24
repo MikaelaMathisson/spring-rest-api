@@ -19,13 +19,9 @@ public class Place {
 
     @ManyToOne
     private Category category;
-
     private Long userId;
-
     private boolean isPublic;
-
     private String description;
-
     private Point coordinates;
 
     @CreationTimestamp
@@ -35,6 +31,7 @@ public class Place {
     private LocalDateTime updatedAt;
 
     private String location;
+    private boolean isDeleted = false;
 
     // Getters and setters
     public Long getId() {
@@ -109,7 +106,11 @@ public class Place {
         return updatedAt;
     }
 
-    public void setIsPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

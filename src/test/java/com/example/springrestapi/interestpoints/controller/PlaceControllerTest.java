@@ -44,7 +44,7 @@ public class PlaceControllerTest {
 
         List<Place> allPlaces = Arrays.asList(place1, place2);
 
-        given(placeRepository.findByIsPublicTrue()).willReturn(allPlaces);
+        given(placeRepository.findByIsPublicTrueAndIsDeletedFalse()).willReturn(allPlaces);
 
         mockMvc.perform(get("/api/places")
                         .contentType(MediaType.APPLICATION_JSON))
