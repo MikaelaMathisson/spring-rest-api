@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class JwtTokenGenerator {
 
-    private static final String USER_SECRET_KEY = "userSecretKey123!";
-    private static final String ADMIN_SECRET_KEY = "adminSecretKey456!";
+    private static final String USER_SECRET_KEY = "userpw123";
+    private static final String ADMIN_SECRET_KEY = "admin-secret-pw";
     private static final String ISSUER = "my-app";
 
     public static String generateUserToken(String userEmail) {
