@@ -35,18 +35,22 @@ public class PlaceControllerTest {
         place1.setName("Place 1");
         place1.setLocation("Location 1");
         place1.setDescription("Description 1");
+        place1.setPublic(true);
+        place1.setDeleted(false);
 
         Place place2 = new Place();
         place2.setId(2L);
         place2.setName("Place 2");
         place2.setLocation("Location 2");
         place2.setDescription("Description 2");
+        place2.setPublic(true);
+        place2.setDeleted(false);
 
         List<Place> allPlaces = Arrays.asList(place1, place2);
 
         given(placeRepository.findByIsPublicTrueAndIsDeletedFalse()).willReturn(allPlaces);
 
-        mockMvc.perform(get("/api/places")
+        mockMvc.perform(get("/api/places/public")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'id':1,'name':'Place 1','location':'Location 1','description':'Description 1'},{'id':2,'name':'Place 2','location':'Location 2','description':'Description 2'}]"));

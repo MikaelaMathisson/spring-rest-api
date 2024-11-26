@@ -25,6 +25,9 @@ public class PlaceController {
 
     @GetMapping
     public List<Place> getUserPlaces(@AuthenticationPrincipal Jwt jwt) {
+        if (jwt == null) {
+            return List.of();
+        }
         Long userId = Long.valueOf(jwt.getSubject());
         return placeRepository.findByUserIdAndIsDeletedFalse(userId);
     }
@@ -44,12 +47,18 @@ public class PlaceController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Place> createPlace(@RequestBody Place place, @AuthenticationPrincipal Jwt jwt) {
+        if (jwt == null) {
+            return ResponseEntity.status(403).build();
+        }
         place.setUserId(Long.valueOf(jwt.getSubject()));
         return ResponseEntity.ok(placeRepository.save(place));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails, @AuthenticationPrincipal Jwt jwt) {
+        if (jwt == null) {
+            return ResponseEntity.status(403).build();
+        }
         return placeRepository.findById(id)
                 .map(place -> {
                     if (!place.getUserId().equals(Long.valueOf(jwt.getSubject()))) {
@@ -67,6 +76,9 @@ public class PlaceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePlace(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+        if (jwt == null) {
+            return ResponseEntity.status(403).build();
+        }
         return placeRepository.findById(id)
                 .map(place -> {
                     if (!place.getUserId().equals(Long.valueOf(jwt.getSubject()))) {
