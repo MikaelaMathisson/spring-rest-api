@@ -28,7 +28,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         if (categoryRepository.existsByName(category.getName())) {
             return ResponseEntity.badRequest().build();
