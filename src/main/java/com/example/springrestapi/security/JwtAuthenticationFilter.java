@@ -19,8 +19,7 @@ import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String USER_SECRET_KEY = "userpw123";
-    private static final String ADMIN_SECRET_KEY = "admin-secret-pw";
+    private static final String SECRET_KEY = "common-secret-key";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -43,12 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private DecodedJWT verifyToken(String token) throws JWTVerificationException {
-        Algorithm algorithm;
-        if (token.contains("ROLE_ADMIN")) {
-            algorithm = Algorithm.HMAC256(ADMIN_SECRET_KEY);
-        } else {
-            algorithm = Algorithm.HMAC256(USER_SECRET_KEY);
-        }
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }

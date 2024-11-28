@@ -7,20 +7,19 @@ import java.util.Date;
 
 public class JwtTokenGenerator {
 
-    private static final String USER_SECRET_KEY = "userpw123";
-    private static final String ADMIN_SECRET_KEY = "admin-secret-pw";
+    private static final String SECRET_KEY = "common-secret-key";
     private static final String ISSUER = "my-app";
 
     public static String generateUserToken(String userEmail) {
-        return generateToken(userEmail, "ROLE_USER", USER_SECRET_KEY);
+        return generateToken(userEmail, "ROLE_USER");
     }
 
     public static String generateAdminToken(String adminEmail) {
-        return generateToken(adminEmail, "ROLE_ADMIN", ADMIN_SECRET_KEY);
+        return generateToken(adminEmail, "ROLE_ADMIN");
     }
 
-    private static String generateToken(String subject, String role, String secretKey) {
-        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+    private static String generateToken(String subject, String role) {
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         return JWT.create()
                 .withIssuer(ISSUER)
                 .withSubject(subject)
