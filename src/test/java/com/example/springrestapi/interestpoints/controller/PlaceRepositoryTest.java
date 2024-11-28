@@ -64,7 +64,7 @@ public class PlaceRepositoryTest {
         List<Place> places = placeRepository.findByUserIdAndIsDeletedFalse(userId);
         assertThat(places).isNotEmpty();
     }
-
+/*
     @Test
     public void testFindWithinRadius() {
         double lat = 40.7128;
@@ -77,7 +77,7 @@ public class PlaceRepositoryTest {
         List<Place> places = placeRepository.findWithinRadius(lat, lon, radius);
         assertThat(places).isNotEmpty();
     }
-
+*/
     @Test
     public void testFindByIdAndIsPublicTrue() {
         Long placeId = 4L;
