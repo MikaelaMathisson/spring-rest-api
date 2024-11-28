@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -17,7 +18,7 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = jwtAuthenticationConverter();
 
         http
-                .csrf(csrfConfigurer -> csrfConfigurer.disable())  // Disable CSRF using the new API
+                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF using the new API
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/categories/**").hasRole("ADMIN")
