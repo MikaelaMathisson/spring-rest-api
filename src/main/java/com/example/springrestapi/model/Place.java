@@ -1,10 +1,9 @@
-package com.example.springrestapi.interestpoints.model;
+package com.example.springrestapi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
@@ -18,11 +17,13 @@ public class Place {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
+
     private Long userId;
     private boolean isPublic;
     private String description;
-    private Point coordinates;
+    private String coordinates;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -82,11 +83,11 @@ public class Place {
         this.description = description;
     }
 
-    public Point getCoordinates() {
+    public String getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Point coordinates) {
+    public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
 

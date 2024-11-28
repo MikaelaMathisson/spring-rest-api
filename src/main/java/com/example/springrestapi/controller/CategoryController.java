@@ -1,7 +1,7 @@
-package com.example.springrestapi.interestpoints.controller;
+package com.example.springrestapi.controller;
 
-import com.example.springrestapi.interestpoints.model.Category;
-import com.example.springrestapi.interestpoints.repository.CategoryRepository;
+import com.example.springrestapi.model.Category;
+import com.example.springrestapi.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

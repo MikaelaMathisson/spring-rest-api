@@ -1,7 +1,7 @@
-package com.example.springrestapi.interestpoints.controller;
+package com.example.springrestapi.controller;
 
-import com.example.springrestapi.interestpoints.model.Place;
-import com.example.springrestapi.interestpoints.repository.PlaceRepository;
+import com.example.springrestapi.model.Place;
+import com.example.springrestapi.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +23,7 @@ public class PlaceController {
         return placeRepository.findByIsPublicTrueAndIsDeletedFalse();
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_user')")
     @GetMapping
     public List<Place> getUserPlaces(@AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
@@ -44,7 +45,7 @@ public class PlaceController {
         return placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     @PostMapping
     public ResponseEntity<Place> createPlace(@RequestBody Place place, @AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
@@ -54,6 +55,7 @@ public class PlaceController {
         return ResponseEntity.ok(placeRepository.save(place));
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_user')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails, @AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
@@ -73,7 +75,7 @@ public class PlaceController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
-
+@PreAuthorize("hasAuthority('SCOPE_admin')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePlace(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {

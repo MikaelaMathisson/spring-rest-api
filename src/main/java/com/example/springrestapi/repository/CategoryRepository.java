@@ -1,6 +1,6 @@
-package com.example.springrestapi.interestpoints.repository;
+package com.example.springrestapi.repository;
 
-import com.example.springrestapi.interestpoints.model.Category;
+import com.example.springrestapi.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

@@ -1,5 +1,4 @@
 package com.example.springrestapi.config;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -27,7 +26,6 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/api/places/category/**").permitAll()
                         .requestMatchers(GET, "/api/places/radius").permitAll()
                         .requestMatchers(POST, "/api/places/**").hasAuthority("SCOPE_user")
-
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2

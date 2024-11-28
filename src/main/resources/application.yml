@@ -13,7 +13,6 @@ spring:
     oauth2:
       resource server:
         jwt:
-          issuer-uri: https://your-issuer-uri
-          jwk-set-uri: https://your-jwk-set-uri
+          issuer-uri: https://fungover.org/auth
 server:
   port: 8080
