@@ -18,6 +18,7 @@ public class PlaceController {
     @Autowired
     private PlaceRepository placeRepository;
 
+    // Hämta alla publika platser för en anonym användare
     @GetMapping("/public")
     public List<Place> getPublicPlaces() {
         return placeRepository.findByIsPublicTrueAndIsDeletedFalse();
@@ -32,7 +33,7 @@ public class PlaceController {
         Long userId = Long.valueOf(jwt.getSubject());
         return placeRepository.findByUserIdAndIsDeletedFalse(userId);
     }
-
+// Hämta platser som tillhör inlogggad användare
     @GetMapping("/{id}")
     public ResponseEntity<Place> getPlaceById(@PathVariable Long id) {
         return placeRepository.findById(id)
@@ -40,11 +41,19 @@ public class PlaceController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //Hämta alla platser inom specifik kategori
     @GetMapping("/category/{categoryId}")
     public List<Place> getPlacesByCategory(@PathVariable Long categoryId) {
         return placeRepository.findByCategoryIdAndIsPublicTrueAndIsDeletedFalse(categoryId);
     }
 
+    // Hämta platser inom en viss radie (radie från ett centrum eller hörn på en kvadrat)
+    @GetMapping("/radius")
+    public List<Place> getPlacesWithinRadius(@RequestParam String point, @RequestParam double radius) {
+        return placeRepository.findPublicPlacesWithinRadius(point, radius);
+    }
+
+    // Skapa en ny plats som Admin
     @PreAuthorize("hasAuthority('SCOPE_admin')")
     @PostMapping
     public ResponseEntity<Place> createPlace(@RequestBody Place place, @AuthenticationPrincipal Jwt jwt) {
@@ -55,6 +64,7 @@ public class PlaceController {
         return ResponseEntity.ok(placeRepository.save(place));
     }
 
+    // Uppdatera en plats som användaren äger
     @PreAuthorize("hasAuthority('SCOPE_user')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlace(@PathVariable Long id, @RequestBody Place placeDetails, @AuthenticationPrincipal Jwt jwt) {
@@ -67,7 +77,7 @@ public class PlaceController {
                         return ResponseEntity.status(403).build();
                     }
                     place.setName(placeDetails.getName());
-                    place.setCategory(placeDetails.getCategory());
+                    placeDetails.setCategory(place.getCategory());
                     place.setPublic(placeDetails.isPublic());
                     place.setDescription(placeDetails.getDescription());
                     place.setCoordinates(placeDetails.getCoordinates());
@@ -75,6 +85,8 @@ public class PlaceController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    // Ta bort en plats som admin
 @PreAuthorize("hasAuthority('SCOPE_admin')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePlace(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
