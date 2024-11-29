@@ -18,7 +18,7 @@ public class Place {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private String category;
 
     private Long userId;
     private boolean isPublic;
@@ -51,11 +51,11 @@ public class Place {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -113,5 +113,13 @@ public class Place {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setLastModified(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

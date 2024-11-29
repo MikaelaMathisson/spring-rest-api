@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/api/places/category/**").permitAll()
                         .requestMatchers(GET, "/api/places/radius").permitAll()
                         .requestMatchers(POST, "/api/places/**").hasAuthority("SCOPE_user")
-                        .anyRequest().authenticated()
+                        .anyRequest().denyAll()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(Customizer.withDefaults())
